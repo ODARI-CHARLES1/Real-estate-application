@@ -6,20 +6,17 @@ config();
 
 const app = express();
 const PORT = process.env.PORT;
-
 app.listen(PORT, async()=>{
-    //await connection to neon postgre database
-    const dbconnect = await pool.connect();
     try {
-      if (dbconnect) {
-        console.log("Database successfully connected ✅");
-        console.log("🌐 Server running on port",PORT)
-      } else {
-        console.log("Error connecting to the database ❌");
-      };  
-    }catch (error) {
-       console.log("Error setting up the server❌", error);
+        // Test connection to Neon PostgreSQL database
+        const client = await pool.connect();
+        console.log('Database connected successfully✅');
+        client.release();
+    } catch (error) {
+        console.error('❌Database connection failed:', error);
+        process.exit(1);
     }
+    console.log("🌐 Server running on port", PORT);
     
 
 })
